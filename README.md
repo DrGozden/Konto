@@ -48,38 +48,13 @@ Pre pokretanja projekta potrebno je da budu instalirani:
 
 ## Pokretanje baze podataka
 
-Za pokretanje projekta nije potrebno koristiti shell skripte za bazu. Preporuceni nacin je rucno kreiranje baze i rucno izvrsavanje SQL fajlova.
-
 ### 1. Kreiranje prazne baze
 
-U DBeaver-u treba napraviti novu PostgreSQL bazu, na primer:
-
-```text
-konto
-```
+U DBeaver-u treba napraviti novu PostgreSQL bazu
 
 ### 2. Kreiranje strukture baze
 
-Nad tom bazom treba pokrenuti sledeci fajl:
-
-- `database/seeds/000_schema.sql`
-
-Ovaj fajl kreira tablice, ogranicenja i relacije.
-
-### 3. Unos pocetnih podataka
-
-Nakon toga treba redom izvrsiti sledece SQL fajlove:
-
-1. `database/seeds/001_categories.sql`
-2. `database/seeds/002_admin_user.sql`
-3. `database/seeds/003_users.sql`
-4. `database/seeds/004_accounts.sql`
-5. `database/seeds/005_transactions.sql`
-6. `database/seeds/006_goals.sql`
-7. `database/seeds/007_budgets.sql`
-8. `database/seeds/008_shared_budgets.sql`
-
-Bitno je da se fajlovi pokrecu ovim redosledom, jer kasniji podaci zavise od ranije unetih entiteta.
+U root folderu projekta pokrenuti: psql -U postgres -d konto -f database/seeds/seed.sql
 
 ## Environment promenljive
 
@@ -148,15 +123,15 @@ Zbog toga backend mora biti pokrenut pre frontend-a.
 
 Nakon izvrsavanja SQL seed fajlova mogu se koristiti sledeci kredencijali:
 
-- admin: `admin@konto.app` / `password`
-- korisnici: seedovani korisnici iz `database/seeds/003_users.sql` sa lozinkom `password`
+- korisnici: seedovani korisnici iz `database/seeds/003_users.sql` sa lozinkom `password` - Najcesce koriscen marko.petrovic@email.com
+ - admin: `admin@konto.app` / `password`
+
 
 ## Najkraci postupak pokretanja
 
 1. U DBeaver-u kreirati bazu `konto`
-2. Pokrenuti `database/seeds/000_schema.sql`
-3. Pokrenuti `database/seeds/001_categories.sql` do `database/seeds/008_shared_budgets.sql`
-4. Napraviti `.env` fajl na osnovu `.env.example`
-5. U root direktorijumu pokrenuti `go run .`
-6. U `Frontend` direktorijumu pokrenuti `npm install` i `npm run dev`
+2. Pokrenuti psql -U postgres -d konto -f database/seeds/seed.sql
+3. Napraviti `.env` fajl na osnovu `.env.example`
+4. U root direktorijumu pokrenuti `go run .`
+5. U `Frontend` direktorijumu pokrenuti `npm install` i `npm run dev`
 
