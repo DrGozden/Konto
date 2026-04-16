@@ -34,7 +34,6 @@ Kao baza podataka koristi se PostgreSQL.
 ├── Frontend/              # React frontend
 ├── main.go                # Pokretanje backend servera
 ├── .env.example           # Primer environment promenljivih
-└── setup-db.sh            # Pomocna skripta (nije neophodna za pokretanje)
 ```
 
 ## Preduslovi
