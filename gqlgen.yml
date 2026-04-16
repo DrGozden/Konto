@@ -1,0 +1,88 @@
+# Where are all the schema files located? globs are supported eg  src/**/*.graphqls
+schema:
+  - graph/*.graphqls
+
+# Where should the generated server code go?
+exec:
+  filename: graph/generated/generated.go
+  package: generated
+
+# Uncomment to enable federation
+# federation:
+#   filename: graph/generated/federation.go
+#   package: generated
+
+# Where should any generated models go?
+model:
+  filename: graph/model/models_gen.go
+  package: model
+
+# Where should the resolver implementations go?
+resolver:
+  layout: follow-schema
+  dir: graph
+  package: graph
+
+# Optional: turn on auto-binding between your graphql schema and your go types
+autobind:
+  - "github.com/konto/models"
+
+# This section declares type mapping between the GraphQL and go type systems
+models:
+  ID:
+    model:
+      - github.com/99designs/gqlgen/graphql.ID
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32
+  Int:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32
+  DateTime:
+    model: 
+      - time.Time
+  User:
+    model: github.com/konto/models.User
+    fields:
+      accounts:
+        resolver: true
+  Account:
+    model: github.com/konto/models.Account
+    fields:
+      user:
+        resolver: true
+      transactions:
+        resolver: true
+  Transaction:
+    model: github.com/konto/models.Transaction
+    fields:
+      user:
+        resolver: true
+      account:
+        resolver: true
+      category:
+        resolver: true
+  Goal:
+    model: github.com/konto/models.Goal
+    fields:
+      user:
+        resolver: true
+  Budget:
+    model: github.com/konto/models.Budget
+    fields:
+      user:
+        resolver: true
+      category:
+        resolver: true
+  Category:
+    model: github.com/konto/models.Category
+  Role:
+    model: github.com/konto/models.Role
+  AccountType:
+    model: github.com/konto/models.AccountType
+  TransactionType:
+    model: github.com/konto/models.TransactionType
+  BudgetPeriod:
+    model: github.com/konto/models.BudgetPeriod

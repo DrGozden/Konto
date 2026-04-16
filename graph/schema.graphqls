@@ -1,0 +1,351 @@
+enum Role {
+  ADMIN
+  USER
+}
+
+enum AccountType {
+  DEBIT
+  CASH
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum BudgetPeriod {
+  MONTHLY
+  WEEKLY
+}
+
+enum SharedBudgetStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+enum SharedBudgetRole {
+  CREATOR
+  MEMBER
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  role: Role!
+  accounts: [Account!]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Account {
+  id: ID!
+  userId: ID!
+  user: User!
+  type: AccountType!
+  balance: Float!
+  transactions: [Transaction!]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Transaction {
+  id: ID!
+  userId: ID!
+  user: User!
+  accountId: ID!
+  account: Account!
+  categoryId: ID!
+  category: Category!
+  amount: Float!
+  type: TransactionType!
+  description: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Goal {
+  id: ID!
+  userId: ID!
+  user: User!
+  name: String!
+  targetAmount: Float!
+  currentAmount: Float!
+  isCompleted: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Budget {
+  id: ID!
+  userId: ID!
+  user: User!
+  categoryId: ID!
+  category: Category!
+  limitAmount: Float!
+  period: BudgetPeriod!
+  currentSpent: Float!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type SharedBudget {
+  id: ID!
+  name: String!
+  description: String
+  currentAmount: Float!
+  status: SharedBudgetStatus!
+  creatorId: ID!
+  creator: User!
+  members: [SharedBudgetMember!]!
+  invitations: [SharedBudgetInvitation!]!
+  transactions: [SharedBudgetTransaction!]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type SharedBudgetMember {
+  id: ID!
+  sharedBudgetId: ID!
+  sharedBudget: SharedBudget!
+  userId: ID!
+  user: User!
+  role: SharedBudgetRole!
+  contributedAmount: Float!
+  joinedAt: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type SharedBudgetInvitation {
+  id: ID!
+  sharedBudgetId: ID!
+  sharedBudget: SharedBudget!
+  inviterId: ID!
+  inviter: User!
+  inviteeId: ID!
+  invitee: User!
+  status: InvitationStatus!
+  message: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+type SharedBudgetTransaction {
+  id: ID!
+  sharedBudgetId: ID!
+  sharedBudget: SharedBudget!
+  userId: ID!
+  user: User!
+  accountId: ID!
+  account: Account!
+  amount: Float!
+  description: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+input RegisterInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input CreateTransactionInput {
+  accountId: ID!
+  categoryId: ID!
+  amount: Float!
+  type: TransactionType!
+  description: String
+}
+
+input CreateGoalInput {
+  name: String!
+  targetAmount: Float!
+}
+
+input AddMoneyToGoalInput {
+  goalId: ID!
+  amount: Float!
+  accountId: ID!
+}
+
+input CreateBudgetInput {
+  categoryId: ID!
+  limitAmount: Float!
+  period: BudgetPeriod!
+}
+
+input TransferBetweenAccountsInput {
+  fromAccountId: ID!
+  toAccountId: ID!
+  amount: Float!
+}
+
+input TransactionFilter {
+  startDate: String
+  endDate: String
+  categoryId: ID
+  type: TransactionType
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+  role: Role!
+}
+
+input CreateCategoryInput {
+  name: String!
+}
+
+input AddMoneyToUserInput {
+  userId: ID!
+  amount: Float!
+}
+
+input CreateSharedBudgetInput {
+  name: String!
+  description: String
+}
+
+input UpdateSharedBudgetInput {
+  name: String
+  description: String
+}
+
+input InviteToSharedBudgetInput {
+  sharedBudgetId: ID!
+  inviteeId: ID!
+  message: String
+}
+
+input RespondToInvitationInput {
+  invitationId: ID!
+  accept: Boolean!
+}
+
+input ContributeToSharedBudgetInput {
+  sharedBudgetId: ID!
+  accountId: ID!
+  amount: Float!
+  description: String
+}
+
+type TransactionConnection {
+  edges: [TransactionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TransactionEdge {
+  node: Transaction!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  # User queries
+  me: User
+  users: [User!]!
+  
+  # Account queries
+  accounts: [Account!]!
+  
+  # Transaction queries
+  transactions(
+    filter: TransactionFilter
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): TransactionConnection!
+  
+  # Category queries
+  categories: [Category!]!
+  
+  # Goal queries
+  goals: [Goal!]!
+  
+  # Budget queries
+  budgets: [Budget!]!
+  
+  # Shared Budget queries
+  sharedBudgets: [SharedBudget!]!
+  sharedBudget(id: ID!): SharedBudget
+  sharedBudgetTransactions(sharedBudgetId: ID!): [SharedBudgetTransaction!]!
+  
+  # Invitation queries
+  pendingInvitations: [SharedBudgetInvitation!]!
+}
+
+type Mutation {
+  # Authentication
+  register(input: RegisterInput!): AuthPayload!
+  login(input: LoginInput!): AuthPayload!
+  
+  # User mutations
+  createTransaction(input: CreateTransactionInput!): Transaction!
+  
+  # Goal mutations
+  createGoal(input: CreateGoalInput!): Goal!
+  addMoneyToGoal(input: AddMoneyToGoalInput!): Goal!
+  deleteGoal(goalId: ID!): Boolean!
+  
+  # Budget mutations
+  createBudget(input: CreateBudgetInput!): Budget!
+  deleteBudget(budgetId: ID!): Boolean!
+  
+  # Account mutations
+  transferBetweenAccounts(input: TransferBetweenAccountsInput!): Boolean!
+  
+  # Admin mutations
+  createUser(input: CreateUserInput!): User!
+  createCategory(input: CreateCategoryInput!): Category!
+  addMoneyToUser(input: AddMoneyToUserInput!): Account!
+  
+  # Shared Budget mutations
+  createSharedBudget(input: CreateSharedBudgetInput!): SharedBudget!
+  updateSharedBudget(sharedBudgetId: ID!, input: UpdateSharedBudgetInput!): SharedBudget!
+  completeSharedBudget(sharedBudgetId: ID!): SharedBudget!
+  deleteSharedBudget(sharedBudgetId: ID!): Boolean!
+  leaveSharedBudget(sharedBudgetId: ID!): Boolean!
+  
+  # Invitation mutations
+  inviteToSharedBudget(input: InviteToSharedBudgetInput!): SharedBudgetInvitation!
+  respondToInvitation(input: RespondToInvitationInput!): Boolean!
+  
+  # Contribution mutations
+  contributeToSharedBudget(input: ContributeToSharedBudgetInput!): SharedBudgetTransaction!
+}
