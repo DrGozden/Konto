@@ -2,6 +2,10 @@
 -- This file creates all necessary tables for the application
 
 -- Drop tables if they exist (for clean setup)
+DROP TABLE IF EXISTS shared_budget_transactions CASCADE;
+DROP TABLE IF EXISTS shared_budget_invitations CASCADE;
+DROP TABLE IF EXISTS shared_budget_members CASCADE;
+DROP TABLE IF EXISTS shared_budgets CASCADE;
 DROP TABLE IF EXISTS budgets CASCADE;
 DROP TABLE IF EXISTS goals CASCADE;
 DROP TABLE IF EXISTS transactions CASCADE;

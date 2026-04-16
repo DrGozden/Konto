@@ -1,6 +1,7 @@
 -- Master seed file for Konto Personal Finance Application
 -- This file creates schema and executes all seed files in the correct order
 -- Run with: psql -d konto -f database/seeds/seed.sql
+SET client_encoding = 'UTF8';
 
 \echo 'Starting database setup...'
 

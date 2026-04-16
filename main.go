@@ -30,18 +30,15 @@ func main() {
 		port = defaultPort
 	}
 
-	// Load environment variables
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		jwtSecret = "your-secret-key-change-this-in-production"
-	}
-
 	// Database connection
 	dbConfig := database.GetConfigFromEnv()
 	db, err := database.NewConnection(dbConfig)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
+
+	// Load JWT secret from config
+	jwtSecret := dbConfig.JWTSecret
 
 	// Check database schema
 	if err := database.CheckSchema(db); err != nil {

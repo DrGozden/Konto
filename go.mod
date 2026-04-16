@@ -6,6 +6,7 @@ require (
 	github.com/99designs/gqlgen v0.17.89
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/graph-gophers/dataloader/v7 v7.1.3
+	github.com/joho/godotenv v1.5.1
 	github.com/vektah/gqlparser/v2 v2.5.32
 	golang.org/x/crypto v0.49.0
 	gorm.io/driver/postgres v1.6.0
@@ -24,7 +25,6 @@ require (
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/sosodev/duration v1.4.0 // indirect
 	golang.org/x/net v0.52.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
